@@ -1,0 +1,30 @@
+---
+title: "PS1"
+author: "Onno Steenweg"
+date: "2026-01-21"
+output: latex_document
+---
+
+```{r}
+set.seed(123)
+data <- rcauchy(1000, location = 0, scale = 1)
+
+ks_normal_test <- function(data) {
+  data_sorted <- sort(data)
+  n <- length(data_sorted)
+  ECDF <- ecdf(data_sorted)
+  empiricalCDF <- ECDF(data_sorted)
+  theoreticalCDF <- pnorm(data_sorted, mean = 0, sd = 1)
+  D <- max(abs(empiricalCDF - theoreticalCDF))
+  return(D)
+}
+
+D_value <- ks_normal_test(data)
+D_value
+
+```
+
+
+
+
+

@@ -18,20 +18,53 @@
 # that countries with low tax and light regulation are wealthier, and they want you to 
 # prove it using statistics!
 
-# We're going to use variables such as: 
-# Ease of doing business rank (1=most business-friendly regulations): IC.BUS.EASE.XQ
-# GDP per capita (current US$): NY.GDP.PCAP.CD
-# "tax revenue (% of GDP)": GC.TAX.TOTL.GD.ZS
+#### Creating the dataset
+# For this task, we need data. The World Bank has the information we need.
+
+# 1. Go to https://databank.worldbank.org/source/world-development-indicators#
+# 2. In the "add country" screen, select the region "Europe and Central Asia", then 
+#    click "select all". Close the pop-up.
+# 3. In the "add series" screen, select "Ease of Doing Business Rank", "GDP per capita 
+#    (current US$)" and "tax revenue (% of GDP)". Tip: you can use the letters to skip
+#    to the right section. Close the pop-up.
+# 4. In the "add time" screen, select the year 2019.
+# 5. Click "apply changes".
+# 6. On the left side of the screen, click the "layout" option.
+# 7. Change "country" to "row". Click "apply changes".
+# 8. Change "series" to "column". Click "apply changes".
+# 9. Change "time" to "page". Click "apply changes".
+# 10. In "download options" in the top right, choose "CSV". Save to desktop.
+# 11. Open the folder on the desktop, click "extract all". Extract to desktop.
+
+# Well done, you've got your dataset!
 
 #### Importing the data
 # Your csv file should now be in the desktop folder. Before opening it, we're going to
 # load in our libraries.
 
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+getwd()
+
 library(tidyverse)
 library(stargazer)
 
 ## loading the data
-data <- 
+data <- read_csv("tutorial01_data.csv")
+View(data)
+
+str(data)
+
+data <- read_csv("tutorial01_data.csv",
+                 col_types = cols(
+                   `Ease of doing business rank (1=most business-friendly regulations)` = col_double(),
+                   `Tax revenue (% of GDP)`= col_double(), 
+                   `GDP per capita (current US$)`= col_double()))
+
+str(data)
+
+# [IC.BUS.EASE.XQ]
+# [GC.TAX.TOTL.GD.ZS]
+# [NY.GDP.PCAP.CD]
 
 #### Wrangling the data
 # We should now have a dataset where our variables are at least of the correct type.
@@ -56,7 +89,16 @@ names(data) <- #hint: try using the function sub() with the regexp " \\[.*"
 #    Try using ggplot to create a plot of scatter showing GDP p/c vs Tax revenue. Add a
 #    simple linear regression line.
   
+
+  
 # 2. Now let's try the same using GDP p/c vs Ease of Doing Business.
+data <- data %>%
+  select(-(starts_with('Time')), -('Country Code'))
+
+
+ls(data)
+
+str(data)
 
 # 3. And, for the sake of argument, let's see what the relationship is between Tax and
 #    Ease of Doing Business.
