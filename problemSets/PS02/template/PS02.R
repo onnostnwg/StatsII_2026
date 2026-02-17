@@ -38,3 +38,17 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 # load data
 load(url("https://github.com/ASDS-TCD/StatsII_2026/blob/main/datasets/climateSupport.RData?raw=true"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
