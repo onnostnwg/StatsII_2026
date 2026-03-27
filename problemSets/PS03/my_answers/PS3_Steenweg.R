@@ -61,7 +61,7 @@ p_vals <- 2 * (1 - pnorm(abs(z_vals)))
 p_vals
 
 
-# Ensure correct ordering
+## ensure correct ordering
 gdp_data$GDPWdiff_cat <- factor(
   gdp_data$GDPWdiff_cat,
   levels = c("negative", "no change", "positive"),
@@ -72,9 +72,45 @@ library(MASS)
 ordered_model <- polr(GDPWdiff_cat ~ REG + OIL, data = gdp_data, method = "logistic")
 summary(ordered_model)
 
+ctable <- coef(summary(ordered_model))
+p_values <- 2 * (1 - pnorm(abs(ctable[, "t value"])))
+cbind(ctable, "p value" = p_values)
+
+
 #####################
 # Problem 2
 #####################
 
 # load data
 mexico_elections <- read.csv("https://raw.githubusercontent.com/ASDS-TCD/StatsII_2026/main/datasets/MexicoMuniData.csv")
+
+poisson_model <- glm(
+  PAN.visits.06 ~ competitive.district + marginality.06 + PAN.governor.06,
+  data = mexico_elections,
+  family = poisson(link = "log")
+)
+
+summary(poisson_model)
+
+library(stargazer)
+stargazer(
+  poisson_model,
+  type = "latex",
+  title = "Poisson Regression: PAN Campaign Visits",
+  dep.var.labels = "Number of PAN Visits (2006)",
+  covariate.labels = c(
+    "Competitive District",
+    "Marginality (2006)",
+    "PAN Governor (2006)"
+  ),
+  digits = 3,
+  out = "poisson_table.tex"
+)
+
+
+
+
+
+
+
+
