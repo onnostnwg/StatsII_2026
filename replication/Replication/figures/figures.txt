@@ -1,0 +1,1 @@
+In this folder all figures from the article and the supplementary material will be saved.
